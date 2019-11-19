@@ -39,6 +39,9 @@ bot.on("message", async (msg: TelegramBot.Message) => {
       timeZone: "Asia/Seoul"
     })}] (@${userId}) executing '${msg.text}' ...`
   );
+  bot.sendMessage(chatId, `Start Building '${msg.text}'`, {
+    reply_to_message_id: msg.message_id
+  });
   exec(cmd, (error, stdout, stderr) => {
     // your callback
     if (error != null) {
