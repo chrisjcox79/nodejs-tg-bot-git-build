@@ -46,7 +46,7 @@ bot.on("message", async (msg: TelegramBot.Message) => {
   bot.sendMessage(chatId, `Start Building '${msg.text}'`, {
     reply_to_message_id: msg.message_id
   });
-  exec(cmd, (error, stdout, stderr) => {
+  await exec(cmd, (error, stdout, stderr) => {
     // your callback
     console.log(` stdout =>`, stdout);
     if (error != null) {
@@ -54,6 +54,7 @@ bot.on("message", async (msg: TelegramBot.Message) => {
       bot.sendMessage(chatId, "Failed to built.\n```" + error + "```", {
         reply_to_message_id: msg.message_id
       });
+      return;
     } else {
       // send a message to the chat acknowledging receipt of their message
       const stdMsg: string =
@@ -61,7 +62,9 @@ bot.on("message", async (msg: TelegramBot.Message) => {
       bot.sendMessage(chatId, "Successfully built." + stdMsg, {
         reply_to_message_id: msg.message_id
       });
+      return;
     }
     return;
   });
+  return;
 });
