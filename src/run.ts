@@ -51,7 +51,6 @@ bot.on("message", async (msg: TelegramBot.Message) => {
   bot.sendMessage(chatId, `Start Building '${msg.text}'`, {
     reply_to_message_id: msg.message_id
   });
-  return;
   await exec(cmd, (error, stdout, stderr) => {
     // your callback
     console.log(` stdout =>`, stdout);
