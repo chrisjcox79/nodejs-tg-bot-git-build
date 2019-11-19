@@ -21,6 +21,8 @@ const repos: string[] = list.map((e: GitInfo): string => e.name);
 
 //
 
+let running: { [k: string]: boolean } = {};
+
 // MAIN
 bot.on("message", async (msg: TelegramBot.Message) => {
   console.log(`got message`);
@@ -41,6 +43,7 @@ bot.on("message", async (msg: TelegramBot.Message) => {
 
   // Now we have a repo index.
   const cmd: string = list[repoIdx].command;
+  const repo: string = repos[repoIdx];
 
   console.log(
     `[${new Date().toLocaleString("ko-KR", {
@@ -48,9 +51,16 @@ bot.on("message", async (msg: TelegramBot.Message) => {
     })}] (@${userId}) executing '${msg.text}' ...`
   );
 
+  if (running[repo]) {
+    bot.sendMessage(chatId, `'${msg.text}' is already running. wait for it.`, {
+      reply_to_message_id: msg.message_id
+    });
+    return;
+  }
   bot.sendMessage(chatId, `Start Building '${msg.text}'`, {
     reply_to_message_id: msg.message_id
   });
+  running[repo] = true;
   await exec(cmd, (error, stdout, stderr) => {
     // your callback
     console.log(` stdout =>`, stdout);
@@ -59,6 +69,7 @@ bot.on("message", async (msg: TelegramBot.Message) => {
       bot.sendMessage(chatId, "Failed to built.\n```" + error + "```", {
         reply_to_message_id: msg.message_id
       });
+      delete running[repo];
       return;
     } else {
       // send a message to the chat acknowledging receipt of their message
@@ -67,9 +78,9 @@ bot.on("message", async (msg: TelegramBot.Message) => {
       bot.sendMessage(chatId, "Successfully built." + stdMsg, {
         reply_to_message_id: msg.message_id
       });
+      delete running[repo];
       return;
     }
-    return;
   });
   return;
 });
