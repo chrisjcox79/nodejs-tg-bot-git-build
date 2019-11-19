@@ -36,14 +36,16 @@ bot.on("message", async (msg: TelegramBot.Message) => {
 
   exec(cmd, (error, stdout, stderr) => {
     // your callback
-    if (error !== null) {
+    if (error != null) {
       console.log("exec error: " + error);
       bot.sendMessage(chatId, "Failed to built.\n```" + error + "```", {
         reply_to_message_id: msg.message_id
       });
     } else {
       // send a message to the chat acknowledging receipt of their message
-      bot.sendMessage(chatId, "Successfully built.", {
+      const stdMsg: string =
+        stdout.indexOf("Already up to date.") > 0 ? "\n" + stdout : "";
+      bot.sendMessage(chatId, "Successfully built." + stdMsg, {
         reply_to_message_id: msg.message_id
       });
     }
