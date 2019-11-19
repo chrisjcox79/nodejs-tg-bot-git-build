@@ -44,6 +44,7 @@ bot.on("message", async (msg: TelegramBot.Message) => {
   });
   exec(cmd, (error, stdout, stderr) => {
     // your callback
+      console.log(` stdout =>`, stdout);
     if (error != null) {
       console.log("exec error: " + error);
       bot.sendMessage(chatId, "Failed to built.\n```" + error + "```", {
