@@ -23,7 +23,11 @@ const repos: string[] = list.map((e: GitInfo): string => e.name);
 
 // MAIN
 bot.on("message", async (msg: TelegramBot.Message) => {
-  const userId: string | undefined = msg.chat.username;
+  console.log(`got message`);
+  const userId: string | undefined = msg.from
+    ? msg.from.username
+    : msg.chat.username;
+  console.log(`msg: ${JSON.stringify(msg)}`);
   if (userId === undefined || userIds.indexOf(userId) < 0) return;
   console.log(`passed userId: ${userId}`);
   const chatId = msg.chat.id;
@@ -43,9 +47,11 @@ bot.on("message", async (msg: TelegramBot.Message) => {
       timeZone: "Asia/Seoul"
     })}] (@${userId}) executing '${msg.text}' ...`
   );
+
   bot.sendMessage(chatId, `Start Building '${msg.text}'`, {
     reply_to_message_id: msg.message_id
   });
+  return;
   await exec(cmd, (error, stdout, stderr) => {
     // your callback
     console.log(` stdout =>`, stdout);
