@@ -25,11 +25,15 @@ const repos: string[] = list.map((e: GitInfo): string => e.name);
 bot.on("message", async (msg: TelegramBot.Message) => {
   const userId: string | undefined = msg.chat.username;
   if (userId === undefined || userIds.indexOf(userId) < 0) return;
+  console.log(`passed userId: ${userId}`);
   const chatId = msg.chat.id;
   if (chatIds.indexOf(chatId) < 0) return;
+  console.log(`passed chatId (1/2): ${chatId}`);
   if (msg.text === undefined) return;
+  console.log(`passed chatId (2/2): ${chatId}`);
   const repoIdx: number = repos.indexOf(msg.text);
   if (repoIdx < 0) return;
+  console.log(`passed repo: ${msg.text}`);
 
   // Now we have a repo index.
   const cmd: string = list[repoIdx].command;
@@ -44,7 +48,7 @@ bot.on("message", async (msg: TelegramBot.Message) => {
   });
   exec(cmd, (error, stdout, stderr) => {
     // your callback
-      console.log(` stdout =>`, stdout);
+    console.log(` stdout =>`, stdout);
     if (error != null) {
       console.log("exec error: " + error);
       bot.sendMessage(chatId, "Failed to built.\n```" + error + "```", {
