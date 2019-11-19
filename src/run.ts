@@ -34,6 +34,11 @@ bot.on("message", async (msg: TelegramBot.Message) => {
   // Now we have a repo index.
   const cmd: string = list[repoIdx].command;
 
+  console.log(
+    `[${new Date().toLocaleString("ko-KR", {
+      timeZone: "Asia/Seoul"
+    })}] (@${userId}) executing '${msg.text}' ...`
+  );
   exec(cmd, (error, stdout, stderr) => {
     // your callback
     if (error != null) {
