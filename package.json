@@ -1,0 +1,36 @@
+{
+  "name": "nodejs-tg-bot-git-build",
+  "version": "1.1.0",
+  "description": "",
+  "scripts": {
+    "dev": "nodemon --exec sucrase-node src/run.ts",
+    "test": "nodemon --exec sucrase-node src/test.ts",
+    "build": "sucrase src -d dist --transforms typescript,imports",
+    "start": "node ./dist/run.js",
+    "pm2": "pm2 start ./dist/run.js --name tg-git-build",
+    "sonar": "./sonar/run.sh"
+  },
+  "dependencies": {
+    "app-root-path": "^2.2.1",
+    "axios": "^0.18.0",
+    "is-alphanumeric": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/body-parser": "^1.17.0",
+    "@types/node": "^11.13.2",
+    "@types/app-root-path": "^1.2.4",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.16.4",
+    "sucrase": "^3.10.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Cellularhacker/nodejs-tg-bot-git-build.git"
+  },
+  "author": "wva3cdae@gmail.com",
+  "bugs": {
+    "url": "https://github.com/Cellularhacker/nodejs-tg-bot-git-build/issues"
+  },
+  "homepage": "https://github.com/Cellularhacker/nodejs-tg-bot-git-build"
+}
